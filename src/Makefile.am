@@ -8,7 +8,7 @@ vala_editor_CPPFLAGS = \
 	
 vala_editor_CFLAGS = -w
 	
-icons = 	icons/class.png \
+icons = icons/class.png \
 	icons/codenode.png \
 	icons/constant.png \
 	icons/constructor.png \
@@ -35,7 +35,7 @@ icons.c:
 	echo '<?xml version="1.0" encoding="UTF-8"?>' > resources.xml
 	echo '<gresources>' >> resources.xml
 	echo '	<gresource prefix="/resources">' >> resources.xml
-	$(foreach ui, $(ui_DATA), echo '		<file compressed="true">$(ui)</file>' >> resources.xml;)
+	$(foreach icon, $(icons), echo '		<file compressed="true">$(icon)</file>' >> resources.xml;)
 	echo '	</gresource>' >> resources.xml
 	echo '</gresources>' >> resources.xml
 	glib-compile-resources resources.xml --sourcedir=$(srcdir) --generate-source --target=$@

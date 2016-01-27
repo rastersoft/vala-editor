@@ -4,10 +4,11 @@ namespace Editor {
 			GLib.Object (symbol: symbol);
 		}
 		
-		FileIcon icon;
+		Icon icon;
 		
 		construct {
-			icon = new FileIcon (File.new_for_path ("icons/%s.png".printf (symbol.type_name.substring (4).down())));
+			icon = new BytesIcon (resources_lookup_data ("/resources/icons/%s.png".printf (symbol.type_name.substring (4).down()),
+				ResourceLookupFlags.NONE));
 		}
 		
 		public unowned GLib.Icon? get_gicon() {
@@ -33,7 +34,7 @@ namespace Editor {
 		construct {
 			member_access = new Regex ("""((?:\w+(?:\s*\([^()]*\))?\.)*)(\w*)$""");
 			member_access_split = new Regex ("""(\s*\([^()]*\))?\.""");
-			icon = new Gdk.Pixbuf.from_file ("icons/gnome.png");
+			icon = new Gdk.Pixbuf.from_resource ("/resources/icons/gnome.png");
 		}
 		
 		public Document document { get; construct; }
