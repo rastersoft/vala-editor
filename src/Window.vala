@@ -21,11 +21,15 @@ namespace Editor {
 		DocumentManager manager;
 		private AutovalaPlugin.FileViewer fileViewer;
 		private AutovalaPlugin.ProjectViewer projectViewer;
+		private AutovalaPlugin.OutputView outputView;
+		private AutovalaPlugin.SearchView searchView;
 		
 		construct {
 
 			var autovala_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
 			var main_box = new Gtk.Paned(Gtk.Orientation.HORIZONTAL);
+			var search_box = new AutovalaPlugin.PanedPercentage(Gtk.Orientation.VERTICAL,0.85);
+			var search_notebook = new Gtk.Notebook();
 
 			fileViewer = new FileViewer();
 			fileViewer.clicked_file.connect(this.file_selected);
@@ -33,10 +37,17 @@ namespace Editor {
 			projectViewer = new ProjectViewer();
 			projectViewer.clicked_file.connect(this.file_selected);
 
+			this.outputView = new AutovalaPlugin.OutputView();
+			
+			this.searchView = new AutovalaPlugin.SearchView();
+			//this.searchView.open_file.connect(this.file_line_selected);
+
 			var actionButtons = new ActionButtons();
 			actionButtons.open_file.connect(this.file_selected);
 			this.projectViewer.link_file_view(this.fileViewer);
 			this.projectViewer.link_action_buttons(actionButtons);
+			this.projectViewer.link_output_view(this.outputView);
+			this.projectViewer.link_search_view(this.searchView);
 
 			var scroll1 = new Gtk.ScrolledWindow(null,null);
 			scroll1.add(projectViewer);
@@ -86,7 +97,11 @@ namespace Editor {
 			
 			bar.pack_start (button);
 			set_titlebar (bar);
-			main_box.add2(manager);
+			main_box.add2(search_box);
+			search_box.add1(manager);
+			search_box.add2(search_notebook);
+			search_notebook.append_page(this.outputView,new Gtk.Label("Autovala output"));
+			search_notebook.append_page(this.searchView,new Gtk.Label("Autovala search"));
 			add (main_box);
 		}
 
