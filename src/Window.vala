@@ -76,15 +76,20 @@ namespace Editor {
 				var dialog = new FileChooserDialog (this, "Open file(s)");
 				string ?last_file = null;
 				if (dialog.run() == Gtk.ResponseType.OK) {
+					Editor.Document? doc = null;
 					foreach (var file in dialog.get_filenames()) {
-						if (!(file in manager)) {
-							manager.add_document (file);
+						doc = manager.find_document(file);
+						if (doc == null) {
+							doc = manager.add_document (file);
 						}
 						last_file = file;
 					}
 					this.fileViewer.set_current_file(last_file);
 					this.projectViewer.set_current_file(last_file);
 					manager.show_all();
+					if (doc != null) {
+						manager.page = doc.notebook_page;
+					}
 				}
 				dialog.destroy();
 			});
@@ -111,10 +116,12 @@ namespace Editor {
 		 * @param filepath The file (with full path) clicked by the user
 		 */
 		public void file_selected(string filepath) {
-			if (!(filepath in this.manager)) {
-				this.manager.add_document(filepath);
+			var doc = this.manager.find_document(filepath);
+			if (doc == null) {
+				doc = this.manager.add_document(filepath);
 				manager.show_all();
 			}
+			manager.page = doc.notebook_page;
 		}
 
 	}
