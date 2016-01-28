@@ -44,7 +44,7 @@ vala_editor_SOURCES = icons.c \
 	Document.vala DocumentManager.vala Engine.vala Locator.vala main.vala Provider.vala Window.vala
 	
 vala_editor_LDADD = $(EDITOR_LIBS)
-vala_editor_VALAFLAGS = --pkg gtksourceview-3.0 --pkg libvala-$(VALA_VERSION) --gresources resources.xml --target-glib=2.38
+vala_editor_VALAFLAGS = --pkg gtksourceview-3.0 --pkg libvala-$(VALA_VERSION) --pkg AutoVala --pkg AutovalaPlugin --gresources resources.xml --target-glib=2.38
 
 CLEANFILES = *.c *.o vala-editor *.stamp
 
