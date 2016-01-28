@@ -31,7 +31,8 @@ namespace Editor {
 		
 		public signal void saved();
 		public signal void text_changed();
-		
+
+		public int notebook_page { get; set; }
 		public int column { get; private set; }
 		public int line { get; private set; }
 		public string location { get; construct; }
