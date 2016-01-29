@@ -88,7 +88,7 @@ namespace Editor {
 					this.projectViewer.set_current_file(last_file);
 					manager.show_all();
 					if (doc != null) {
-						manager.page = doc.notebook_page;
+						manager.page = manager.page_num(doc.top_container);
 					}
 				}
 				dialog.destroy();
@@ -121,7 +121,7 @@ namespace Editor {
 				doc = this.manager.add_document(filepath);
 				manager.show_all();
 			}
-			manager.page = doc.notebook_page;
+			manager.page = manager.page_num(doc.top_container);
 		}
 
 	}

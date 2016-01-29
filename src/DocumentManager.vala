@@ -9,23 +9,33 @@ namespace Editor {
 			engine = new Engine();
 			this.documents = new Gee.ArrayList<Document>();
 		}
-		
+
 		public bool contains (string path) {
-			foreach(var doc in this.documents) {
-				if (doc.location == path) {
-					return true;
-				}
-			}
-			return false;
+			return (this.find_document_internal(this,path) == null) ? false : true;
 		}
 
 		public Document? find_document (string path) {
-			foreach(var doc in this.documents) {
-				if (doc.location == path) {
-					return doc;
+			return this.find_document_internal(this,path);
+		}
+
+		private Document ? find_document_internal(Gtk.Widget widget, string path) {
+			Editor.Document? result = null;
+
+			if (widget is Editor.Document) {
+				if ((widget as Editor.Document).location == path) {
+					result = (widget as Editor.Document);
+				}
+			} else if (widget is Gtk.Container) {
+				foreach (var widget2 in (widget as Gtk.Container).get_children()) {
+					var result2 = this.find_document_internal(widget2,path);
+					if (result2 != null) {
+						result = result2;
+						break;
+					}
 				}
 			}
-			return null;
+
+			return result;
 		}
 
 		public Document add_document (string path) {
@@ -34,7 +44,8 @@ namespace Editor {
 			engine.add_document (document);
 			var sw = new Gtk.ScrolledWindow (null, null);
 			sw.add (document);
-			document.notebook_page = append_page (sw, null);
+			append_page (sw, null);
+			document.top_container = sw;
 			this.documents.add(document);
 			return document;
 		}
