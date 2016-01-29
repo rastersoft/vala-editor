@@ -18,6 +18,7 @@ namespace Editor {
 			return this.find_document_internal(this,path);
 		}
 
+		/* Since each document widget is inside a Gtk.ScrolledWindow, it is a must to do a recursive search */
 		private Document ? find_document_internal(Gtk.Widget widget, string path) {
 			Editor.Document? result = null;
 
@@ -45,7 +46,7 @@ namespace Editor {
 			var sw = new Gtk.ScrolledWindow (null, null);
 			sw.add (document);
 			append_page (sw, null);
-			document.top_container = sw;
+			document.top_container = sw; // store the document top container inside, to gain access to the page where it is
 			this.documents.add(document);
 			return document;
 		}
