@@ -74,7 +74,6 @@ namespace Editor {
 			var fileitem = new Gtk.MenuItem.with_label ("File");
 			fileitem.activate.connect (() => {
 				var dialog = new FileChooserDialog (this, "Open file(s)");
-				string ?last_file = null;
 				if (dialog.run() == Gtk.ResponseType.OK) {
 					Editor.Document? doc = null;
 					string? last_file = null;
