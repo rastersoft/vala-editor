@@ -33,13 +33,15 @@ namespace Editor {
 			return result;
 		}
 
-		public void add_document (string path) {
+		public Document add_document (string path) {
 			var document = new Document (path);
 			document.manager = this;
 			engine.add_document (document);
 			var sw = new Gtk.ScrolledWindow (null, null);
 			sw.add (document);
 			append_page (sw, null);
+			document.top_container = sw; // this allows to easily find in which page is a document, given its associated file
+			return document;
 		}
 		
 		public Engine engine { get; private set; }
