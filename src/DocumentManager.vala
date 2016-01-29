@@ -5,20 +5,31 @@ namespace Editor {
 		}
 		
 		public bool contains (string path) {
-			bool result = false;
-			this.foreach (widget => {
-				if (widget is Document && (widget as Document).location == path)
-					result = true;
-			});
-			return result;
+			return (this.find_document_internal(this,path) == null) ? false : true;
 		}
 
 		public Document? find_document (string path) {
-			Document? result = null;
-			this.foreach (widget => {
-				if (widget is Document && (widget as Document).location == path)
-					result = widget as Document;
-			});
+			return this.find_document_internal(this,path);
+		}
+
+		/* Since each document widget is inside a Gtk.ScrolledWindow, it is a must to do a recursive search */
+		private Document ? find_document_internal(Gtk.Widget widget, string path) {
+			Editor.Document? result = null;
+
+			if (widget is Editor.Document) {
+				if ((widget as Editor.Document).location == path) {
+					result = (widget as Editor.Document);
+				}
+			} else if (widget is Gtk.Container) {
+				foreach (var widget2 in (widget as Gtk.Container).get_children()) {
+					var result2 = this.find_document_internal(widget2,path);
+					if (result2 != null) {
+						result = result2;
+						break;
+					}
+				}
+			}
+
 			return result;
 		}
 
@@ -28,7 +39,7 @@ namespace Editor {
 			engine.add_document (document);
 			var sw = new Gtk.ScrolledWindow (null, null);
 			sw.add (document);
-			document.notebook_page = append_page (sw, null);
+			append_page (sw, null);
 		}
 		
 		public Engine engine { get; private set; }
