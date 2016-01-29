@@ -1,13 +1,8 @@
-using Gee;
-
 namespace Editor {
 	public class DocumentManager : Gtk.Notebook {
 
-		Gee.List<Document> documents;
-
 		construct {
 			engine = new Engine();
-			this.documents = new Gee.ArrayList<Document>();
 		}
 
 		public bool contains (string path) {
@@ -47,7 +42,6 @@ namespace Editor {
 			sw.add (document);
 			append_page (sw, null);
 			document.top_container = sw; // store the document top container inside, to gain access to the page where it is
-			this.documents.add(document);
 			return document;
 		}
 		
