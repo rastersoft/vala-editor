@@ -77,18 +77,22 @@ namespace Editor {
 				string ?last_file = null;
 				if (dialog.run() == Gtk.ResponseType.OK) {
 					Editor.Document? doc = null;
+					string? last_file = null;
 					foreach (var file in dialog.get_filenames()) {
+						last_file = file;
 						doc = manager.find_document(file);
 						if (doc == null) {
 							doc = manager.add_document (file);
 						}
-						last_file = file;
 					}
 					this.fileViewer.set_current_file(last_file);
 					this.projectViewer.set_current_file(last_file);
 					manager.show_all();
+					if ((doc == null) && (last_file != null) {
+						doc = manager.find_document(last_file);
+					}
 					if (doc != null) {
-						manager.page = manager.page_num(doc.top_container);
+						manager.page = manager.page_num(doc.top_container); // switch to the last of the open document, even if it was already open
 					}
 				}
 				dialog.destroy();

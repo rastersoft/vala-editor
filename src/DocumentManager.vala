@@ -41,7 +41,7 @@ namespace Editor {
 			var sw = new Gtk.ScrolledWindow (null, null);
 			sw.add (document);
 			append_page (sw, null);
-			document.top_container = sw; // store the document top container inside, to gain access to the page where it is
+			document.top_container = sw; // this allows to easily find in which page is a document, given its associated file
 			return document;
 		}
 		
