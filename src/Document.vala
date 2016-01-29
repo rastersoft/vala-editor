@@ -2,6 +2,7 @@ namespace Editor {
 	public class Document : Gtk.SourceView {
 		public Document (string path) {
 			GLib.Object (location: path);
+			this.top_container = null;
 		}
 		
 		construct {
@@ -32,6 +33,7 @@ namespace Editor {
 		public signal void saved();
 		public signal void text_changed();
 
+		public Gtk.Widget? top_container {get; set;}
 		public int column { get; private set; }
 		public int line { get; private set; }
 		public string location { get; construct; }

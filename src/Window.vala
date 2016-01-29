@@ -29,10 +29,22 @@ namespace Editor {
 			fileitem.activate.connect (() => {
 				var dialog = new FileChooserDialog (this, "Open file(s)");
 				if (dialog.run() == Gtk.ResponseType.OK) {
-					foreach (var file in dialog.get_filenames())
-						if (!(file in manager))
-							manager.add_document (file);
+					Editor.Document? doc = null;
+					string? last_file = null;
+					foreach (var file in dialog.get_filenames()) {
+						last_file = file;
+						doc = manager.find_document(file);
+						if (doc == null) {
+							doc = manager.add_document (file);
+						}
+					}
 					manager.show_all();
+					if (last_file != null) {
+						doc = manager.find_document(last_file);
+						if (doc != null) {
+							manager.page = manager.page_num(doc.top_container); // switch to the last open document, even if it was already open
+						}
+					}
 				}
 				dialog.destroy();
 			});
