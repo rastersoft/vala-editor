@@ -87,7 +87,7 @@ namespace Editor {
 					this.fileViewer.set_current_file(last_file);
 					this.projectViewer.set_current_file(last_file);
 					manager.show_all();
-					if ((doc == null) && (last_file != null) {
+					if ((doc == null) && (last_file != null)) {
 						doc = manager.find_document(last_file);
 					}
 					if (doc != null) {
