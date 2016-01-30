@@ -39,7 +39,7 @@ namespace Editor {
 			engine.add_document (document);
 			var sw = new Gtk.ScrolledWindow (null, null);
 			sw.add (document);
-			append_page (sw, null);
+			append_page (sw, new Gtk.Label(GLib.Path.get_basename(path)));
 			document.top_container = sw; // this allows to easily find in which page is a document, given its associated file
 			return document;
 		}
