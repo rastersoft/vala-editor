@@ -1,35 +1,39 @@
 namespace Editor {
 	public class DocumentManager : Gtk.Notebook {
+
 		construct {
 			engine = new Engine();
 		}
-		
+
 		public bool contains (string path) {
-			return (this.find_document_internal(this,path) == null) ? false : true;
+			return (this.find_document(path) == null) ? false : true;
 		}
 
 		public Document? find_document (string path) {
-			return this.find_document_internal(this,path);
+			foreach (var widget in (this as Gtk.Container).get_children()) {
+				var child = this.find_document_internal(widget);
+				if ((child != null) && (child.location == path)) {
+					return child;
+				}
+			}
+			return null;
 		}
 
-		/* Since each document widget is inside a Gtk.ScrolledWindow, it is a must to do a recursive search */
-		private Document ? find_document_internal(Gtk.Widget widget, string path) {
+		/* Does a recursive search in the widget to find the Editor.Document widget */
+		private Document ? find_document_internal(Gtk.Widget widget) {
 			Editor.Document? result = null;
 
 			if (widget is Editor.Document) {
-				if ((widget as Editor.Document).location == path) {
-					result = (widget as Editor.Document);
-				}
+				result = (widget as Editor.Document);
 			} else if (widget is Gtk.Container) {
 				foreach (var widget2 in (widget as Gtk.Container).get_children()) {
-					var result2 = this.find_document_internal(widget2,path);
+					var result2 = this.find_document_internal(widget2);
 					if (result2 != null) {
 						result = result2;
 						break;
 					}
 				}
 			}
-
 			return result;
 		}
 
